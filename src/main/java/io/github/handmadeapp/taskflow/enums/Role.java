@@ -9,6 +9,6 @@ package io.github.handmadeapp.taskflow.enums;
 public enum Role
 {
   ADMIN,
-  IN_PROGRESS,
+  MANAGER,
   USER
 }

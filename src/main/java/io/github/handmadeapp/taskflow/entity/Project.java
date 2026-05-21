@@ -2,6 +2,7 @@
 package io.github.handmadeapp.taskflow.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import io.github.handmadeapp.taskflow.enums.ProjectStatus;
 import jakarta.persistence.*;
@@ -35,15 +36,25 @@ public class Project
   @Size(max = 500)
   private String description;
 
-  @NotBlank
   @Future
   private LocalDateTime deadline;
 
   @Enumerated(EnumType.STRING)
   private ProjectStatus status;
 
-  @NotBlank
   @CreationTimestamp
   private LocalDateTime createdAt;
+
+  @OneToMany(mappedBy = "project",
+              cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+  private List<Task> tasks;
+
+  public Project(String name, String description, LocalDateTime deadLine, ProjectStatus projectStatus)
+  {
+    this.name = name;
+    this.description = description;
+    this.deadline = deadLine;
+    this.status = projectStatus;
+  }
 
 }
