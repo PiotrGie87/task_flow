@@ -21,7 +21,6 @@ import org.hibernate.annotations.CreationTimestamp;
 @AllArgsConstructor
 @Getter
 @Setter
-@NotBlank
 public class Project
 {
   @Id

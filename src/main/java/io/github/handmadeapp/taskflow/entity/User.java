@@ -49,6 +49,11 @@ public class User
    cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})  //DO NOT APPLY CASCADING DELETES!
   private List<Task> tasks;
 
+  @OneToMany(mappedBy = "user", //refers to "user" property in the Task class
+   cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH},
+   fetch = FetchType.LAZY)  //DO NOT APPLY CASCADING DELETES!
+  private List<Comment> comments;
+
   public User(String username, String email, String password, Role role, boolean enabled)
   {
     this.username = username;
