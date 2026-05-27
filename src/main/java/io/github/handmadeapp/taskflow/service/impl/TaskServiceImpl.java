@@ -3,10 +3,19 @@ package io.github.handmadeapp.taskflow.service.impl;
 
 import java.util.List;
 
+import io.github.handmadeapp.taskflow.dto.TaskRequestDto;
+import io.github.handmadeapp.taskflow.dto.TaskResponseDto;
+import io.github.handmadeapp.taskflow.entity.Project;
 import io.github.handmadeapp.taskflow.entity.Task;
+import io.github.handmadeapp.taskflow.entity.User;
 import io.github.handmadeapp.taskflow.enums.Priority;
 import io.github.handmadeapp.taskflow.enums.TaskStatus;
+import io.github.handmadeapp.taskflow.exception.ProjectNotFoundException;
+import io.github.handmadeapp.taskflow.exception.UserNotFoundException;
+import io.github.handmadeapp.taskflow.mapper.TaskMapper;
+import io.github.handmadeapp.taskflow.repository.ProjectRepository;
 import io.github.handmadeapp.taskflow.repository.TaskRepository;
+import io.github.handmadeapp.taskflow.repository.UserRepository;
 import io.github.handmadeapp.taskflow.service.TaskService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,15 +27,36 @@ import org.springframework.stereotype.Service;
 public class TaskServiceImpl implements TaskService
 {
   private final TaskRepository taskRepository;
+  private final ProjectRepository projectRepository;
+  private final UserRepository userRepository;
 
   @Override
-  public Task createTask(Task task)
+  public TaskResponseDto createTask(TaskRequestDto requestDto)
   {
-    return null;
+    Task task = TaskMapper.toEntity(requestDto);
+
+    //Project is mandatory
+    Project project = projectRepository.findById(requestDto.getProjectId())
+                                        .orElseThrow(() -> new ProjectNotFoundException("project not found"));
+
+    task.setProject(project);
+
+    //User is optional
+    if (requestDto.getUserId() != null)
+    {
+      User user = userRepository.findById(requestDto.getUserId())
+                                .orElseThrow(() -> new UserNotFoundException("Id not found"));
+      task.setUser(user);
+    }
+
+    //Save new task in DB
+    Task savedTask = taskRepository.save(task);
+
+    return TaskMapper.toResponseDto(savedTask);
   }
 
   @Override
-  public Task saveTask(Task task)
+  public Task updateTask(Task task)
   {
     return null;
   }
@@ -44,9 +74,9 @@ public class TaskServiceImpl implements TaskService
   }
 
   @Override
-  public List<Task> findAllTasks()
+  public List<TaskResponseDto> findAllTasks()
   {
-    return List.of();
+    return taskRepository.findAll().stream().map(TaskMapper::toResponseDto).toList();
   }
 
   @Override

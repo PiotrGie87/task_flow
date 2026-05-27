@@ -8,10 +8,6 @@ import io.github.handmadeapp.taskflow.enums.Priority;
 import io.github.handmadeapp.taskflow.enums.TaskStatus;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,34 +25,28 @@ public class Task
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotBlank
-  @Size(min = 3, max = 100)
+  @Column(nullable = false, length = 100)
   private String title;
 
-  @NotBlank //works only for Strings
-  @Size(max = 5000)
   private String description;
 
-  @NotNull
   @Enumerated(EnumType.STRING)
   private TaskStatus status;
 
-  @NotNull
   @Enumerated(EnumType.STRING)
   private Priority priority;
 
-  @Future
   private LocalDateTime dueDate;
 
   @CreationTimestamp
   private LocalDateTime createdAt;
 
-  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
 
-  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
-  @JoinColumn(name = "project_id")
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "project_id", nullable = false)
   private Project project;
 
   @OneToMany(mappedBy = "task", //refers to "user" property in the Task class

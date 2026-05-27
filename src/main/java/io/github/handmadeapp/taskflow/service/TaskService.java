@@ -2,21 +2,23 @@ package io.github.handmadeapp.taskflow.service;
 
 import java.util.List;
 
+import io.github.handmadeapp.taskflow.dto.TaskRequestDto;
+import io.github.handmadeapp.taskflow.dto.TaskResponseDto;
 import io.github.handmadeapp.taskflow.entity.Task;
 import io.github.handmadeapp.taskflow.enums.Priority;
 import io.github.handmadeapp.taskflow.enums.TaskStatus;
 
 public interface TaskService
 {
-  Task createTask(Task task);
+  TaskResponseDto createTask(TaskRequestDto requestDto);
 
-  Task saveTask(Task task);
+  Task updateTask(Task task);
 
   void deleteTaskById(Long taskId);
 
   Task findTaskById(Long taskId);
 
-  List<Task> findAllTasks();
+  List<TaskResponseDto> findAllTasks();
 
   List<Task> findTaskByUserId(Long userId);
 
