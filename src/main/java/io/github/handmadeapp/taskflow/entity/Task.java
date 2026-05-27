@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "tasks")
@@ -41,6 +42,9 @@ public class Task
   @CreationTimestamp
   private LocalDateTime createdAt;
 
+  @UpdateTimestamp
+  private LocalDateTime updatedAt;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
@@ -61,5 +65,11 @@ public class Task
     this.status = status;
     this.priority = priority;
     this.dueDate = dueDate;
+  }
+
+  public void addComment(Comment comment)
+  {
+    comments.add(comment);
+    comment.setTask(this);
   }
 }
