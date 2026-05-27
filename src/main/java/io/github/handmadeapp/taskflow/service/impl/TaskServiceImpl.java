@@ -3,14 +3,16 @@ package io.github.handmadeapp.taskflow.service.impl;
 
 import java.util.List;
 
-import io.github.handmadeapp.taskflow.dto.TaskRequestDto;
-import io.github.handmadeapp.taskflow.dto.TaskResponseDto;
+import io.github.handmadeapp.taskflow.dto.task.TaskRequestDto;
+import io.github.handmadeapp.taskflow.dto.task.TaskResponseDto;
+import io.github.handmadeapp.taskflow.dto.task.UpdateTaskRequestDto;
 import io.github.handmadeapp.taskflow.entity.Project;
 import io.github.handmadeapp.taskflow.entity.Task;
 import io.github.handmadeapp.taskflow.entity.User;
 import io.github.handmadeapp.taskflow.enums.Priority;
 import io.github.handmadeapp.taskflow.enums.TaskStatus;
 import io.github.handmadeapp.taskflow.exception.ProjectNotFoundException;
+import io.github.handmadeapp.taskflow.exception.TaskNotFoundException;
 import io.github.handmadeapp.taskflow.exception.UserNotFoundException;
 import io.github.handmadeapp.taskflow.mapper.TaskMapper;
 import io.github.handmadeapp.taskflow.repository.ProjectRepository;
@@ -56,9 +58,26 @@ public class TaskServiceImpl implements TaskService
   }
 
   @Override
-  public Task updateTask(Task task)
+  public TaskResponseDto updateTask(Long taskId, UpdateTaskRequestDto requestDto)
   {
-    return null;
+    Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException("User not found"));
+
+    if (requestDto.getTitle() != null) task.setTitle(requestDto.getTitle());
+    if (requestDto.getDescription() != null) task.setDescription(requestDto.getDescription());
+    if (requestDto.getStatus() != null) task.setStatus(requestDto.getStatus());
+    if (requestDto.getPriority() != null) task.setPriority(requestDto.getPriority());
+    if (requestDto.getDueDate() != null) task.setDueDate(requestDto.getDueDate());
+
+    if (requestDto.getUserId() != null)
+    {
+      User user = userRepository.findById(requestDto.getUserId())
+                                .orElseThrow(() -> new UserNotFoundException("User not found"));
+      task.setUser(user);
+    }
+
+    taskRepository.flush(); //to have a fresh updatedAt field we need to have flush manually
+
+    return TaskMapper.toResponseDto(task);
   }
 
   @Override

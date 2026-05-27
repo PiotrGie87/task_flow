@@ -7,6 +7,7 @@ import java.util.List;
 import io.github.handmadeapp.taskflow.enums.Role;
 import jakarta.persistence.*;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,6 +38,7 @@ public class User
   @NotBlank
   private String password;
 
+  @NotNull
   @Enumerated(EnumType.STRING)
   private Role role;
 
@@ -61,15 +63,5 @@ public class User
     this.password = password;
     this.role = role;
     this.enabled = enabled;
-  }
-
-  //temporary method. TODO move it to the proper layer
-  public void addTask(Task task)
-  {
-
-    if (tasks == null) tasks = new ArrayList<>();
-
-    tasks.add(task);
-    task.setUser(this);
   }
 }

@@ -1,17 +1,7 @@
 package io.github.handmadeapp.taskflow;
 
-import java.time.LocalDateTime;
-
-import io.github.handmadeapp.taskflow.dao.UserDAO;
-import io.github.handmadeapp.taskflow.entity.Task;
-import io.github.handmadeapp.taskflow.entity.User;
-import io.github.handmadeapp.taskflow.enums.Priority;
-import io.github.handmadeapp.taskflow.enums.Role;
-import io.github.handmadeapp.taskflow.enums.TaskStatus;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class TaskflowApplication {

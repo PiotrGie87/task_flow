@@ -3,8 +3,9 @@ package io.github.handmadeapp.taskflow.controller;
 
 import java.util.List;
 
-import io.github.handmadeapp.taskflow.dto.TaskRequestDto;
-import io.github.handmadeapp.taskflow.dto.TaskResponseDto;
+import io.github.handmadeapp.taskflow.dto.task.TaskRequestDto;
+import io.github.handmadeapp.taskflow.dto.task.TaskResponseDto;
+import io.github.handmadeapp.taskflow.dto.task.UpdateTaskRequestDto;
 import io.github.handmadeapp.taskflow.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,16 @@ public class TaskController
   {
     TaskResponseDto createdTask = taskService.createTask(requestDto);
     return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
+  }
+
+  @PutMapping("/{taskId}")
+  public ResponseEntity<TaskResponseDto> updateTask(
+                                          @PathVariable Long taskId,
+                                          @Valid @RequestBody UpdateTaskRequestDto requestDto)
+  {
+    TaskResponseDto updatedTask = taskService.updateTask(taskId, requestDto);
+
+    return ResponseEntity.ok(updatedTask);
   }
 
 }

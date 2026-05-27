@@ -1,8 +1,8 @@
 
 package io.github.handmadeapp.taskflow.mapper;
 
-import io.github.handmadeapp.taskflow.dto.TaskRequestDto;
-import io.github.handmadeapp.taskflow.dto.TaskResponseDto;
+import io.github.handmadeapp.taskflow.dto.task.TaskRequestDto;
+import io.github.handmadeapp.taskflow.dto.task.TaskResponseDto;
 import io.github.handmadeapp.taskflow.entity.Task;
 
 public class TaskMapper
@@ -39,6 +39,7 @@ public class TaskMapper
     dto.setPriority(task.getPriority());
     dto.setDueDate(task.getDueDate());
     dto.setCreatedAt(task.getCreatedAt());
+    dto.setUpdatedAt(task.getUpdatedAt());
 
     if (task.getUser() != null)
     {
