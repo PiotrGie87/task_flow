@@ -54,8 +54,7 @@ public class Task
   private Project project;
 
   @OneToMany(mappedBy = "task", //refers to "user" property in the Task class
-   cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH},
-   fetch = FetchType.LAZY)  //DO NOT APPLY CASCADING DELETES!
+   cascade = CascadeType.ALL, orphanRemoval  = true)
   private List<Comment> comments;
 
   public Task(String title, String description, TaskStatus status, Priority priority, LocalDateTime dueDate)

@@ -60,7 +60,7 @@ public class TaskServiceImpl implements TaskService
   @Override
   public TaskResponseDto updateTask(Long taskId, UpdateTaskRequestDto requestDto)
   {
-    Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException("User not found"));
+    Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException("Task not found"));
 
     if (requestDto.getTitle() != null) task.setTitle(requestDto.getTitle());
     if (requestDto.getDescription() != null) task.setDescription(requestDto.getDescription());
@@ -83,42 +83,46 @@ public class TaskServiceImpl implements TaskService
   @Override
   public void deleteTaskById(Long taskId)
   {
-
+    Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException("Task not found"));
+    taskRepository.delete(task);
   }
 
   @Override
-  public Task findTaskById(Long taskId)
+  public TaskResponseDto findTaskById(Long taskId)
   {
-    return null;
+    Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException("Task not found"));
+
+    return TaskMapper.toResponseDto(task);
   }
 
   @Override
   public List<TaskResponseDto> findAllTasks()
   {
     return taskRepository.findAll().stream().map(TaskMapper::toResponseDto).toList();
+
   }
 
   @Override
-  public List<Task> findTaskByUserId(Long userId)
+  public List<TaskResponseDto> findTasksByUserId(Long userId)
   {
-    return List.of();
+    return taskRepository.findByUserId(userId).stream().map(TaskMapper::toResponseDto).toList();
   }
 
   @Override
-  public List<Task> findTaskByProjectId(Long projectId)
+  public List<TaskResponseDto> findTasksByProjectId(Long projectId)
   {
-    return List.of();
+    return taskRepository.findByProjectId(projectId).stream().map(TaskMapper::toResponseDto).toList();
   }
 
   @Override
-  public List<Task> findByStatus(TaskStatus taskStatus)
+  public List<TaskResponseDto> findTasksByStatus(TaskStatus taskStatus)
   {
-    return List.of();
+    return taskRepository.findByStatus(taskStatus).stream().map(TaskMapper::toResponseDto).toList();
   }
 
   @Override
-  public List<Task> findByPriority(Priority taskPriority)
+  public List<TaskResponseDto> findTasksByPriority(Priority taskPriority)
   {
-    return List.of();
+    return taskRepository.findByPriority(taskPriority).stream().map(TaskMapper::toResponseDto).toList();
   }
 }
