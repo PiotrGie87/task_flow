@@ -5,7 +5,6 @@ import java.util.List;
 import io.github.handmadeapp.taskflow.dto.task.TaskRequestDto;
 import io.github.handmadeapp.taskflow.dto.task.TaskResponseDto;
 import io.github.handmadeapp.taskflow.dto.task.UpdateTaskRequestDto;
-import io.github.handmadeapp.taskflow.entity.Task;
 import io.github.handmadeapp.taskflow.enums.Priority;
 import io.github.handmadeapp.taskflow.enums.TaskStatus;
 
@@ -17,15 +16,15 @@ public interface TaskService
 
   void deleteTaskById(Long taskId);
 
-  Task findTaskById(Long taskId);
+  TaskResponseDto findTaskById(Long taskId);
 
   List<TaskResponseDto> findAllTasks();
 
-  List<Task> findTaskByUserId(Long userId);
+  List<TaskResponseDto> findTasksByUserId(Long userId);
 
-  List<Task> findTaskByProjectId(Long projectId);
+  List<TaskResponseDto> findTasksByProjectId(Long projectId);
 
-  List<Task> findByStatus(TaskStatus taskStatus);
+  List<TaskResponseDto> findTasksByStatus(TaskStatus taskStatus);
 
-  List<Task> findByPriority(Priority taskPriority);
+  List<TaskResponseDto> findTasksByPriority(Priority taskPriority);
 }
